@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './main-page.css';
+import Header from './header';
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {}; 
+  }
+  //OR
+  // state = {};
+
+  componentDidMount() {
+    this.fetchHouses();
+  }
+
+  fetchHouses = () => {
+      fetch('/houses.json')
+      .then(rsp => rsp.json())
+      .then(allHouses =>{
+        this.allHouses = allHouses;
+        this.determineFeaturedHouse();
+      })
+  }
+
+  determineFeaturedHouse = () => {
+    if(this.allHouses){
+      const randomIndex = Math.floor(Math.random() * this.allHouses.length);
+      const featuredHouse = this.allHouses[randomIndex];
+      this.setState({ featuredHouse });
+    }
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container">
+        <Header subtitle="Providing houses all over the world"/>
       </div>
     );
   }
