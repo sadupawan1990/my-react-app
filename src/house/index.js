@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import './house.css'
+import './house.css';
+import emailIcon from './Email.png'
+import Inquiry from './inquiry';
+
 class House extends Component {
-    state = {};
+    state = { inquiryShown: false };
     constructor(props) {
         super(props);
     }
 
+    inquiryToggle = () => {
+        this.setState({ inquiryShown: !this.state.inquiryShown });
+    }
+
     render() {
         const house = this.props.house;
+        const inquiryComponent = this.state.inquiryShown ? <Inquiry house={house} /> : null;
         return (
             <div>
                 <div className="row mt-2">
@@ -21,8 +29,11 @@ class House extends Component {
                         <img src={`https://images.pexels.com/photos/${house.photo}/pexels-photo-${house.photo}.jpeg?w=600&h=400&auto=compress&cs=tinysrgb`} alt="House" />
                     </div>
                     <div className="col-md-5">
-                        <p className="price">{house.price}</p>
+                        <p className="price">${house.price}</p>
                         <p>{house.description}</p>
+                        <img src={emailIcon} height="50" alt="Inquiry"
+                            onClick={this.inquiryToggle} />
+                        {inquiryComponent}
                     </div>
                 </div>
             </div>
